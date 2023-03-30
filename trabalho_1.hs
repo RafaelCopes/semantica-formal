@@ -117,9 +117,6 @@ cbigStep (Atrib (Var x) e,s) = (Skip, mudaVar s x (ebigStep (e, s)))
 cbigStep (While b c, s)
    | bbigStep (b, s) == True = cbigStep (Seq c (While b c), s)
    | otherwise = cbigStep (Skip, s)
---cbigStep (DoWhile c b,s)
---   | bbigStep (b, s) == True = cbigStep (Seq c (DoWhile c b), s)
---   | otherwise = cbigStep (c, s)
 cbigStep (DoWhile c b,s) = cbigStep(Seq c (While b c), s)
 cbigStep (Repeat c b,s) = cbigStep (Seq c (While (Not b) c), s)
 
@@ -177,7 +174,7 @@ fatorial = (Seq (Atrib (Var "y") (Num 1))
 
 --- O ALUNO DEVE IMPLEMENTAR DOIS EXEMPLOS DE PROGRAMA, UM USANDO O IF E OUTRO USANDO O DO WHILE
 
--- exemplo de programa usando IF
+-- usando IF
 
 sigmaIf :: Memoria
 sigmaIf = [("x", 5), ("y", 0), ("z", 15)]
@@ -186,7 +183,7 @@ sigmaIf = [("x", 5), ("y", 0), ("z", 15)]
 programaIf :: C
 programaIf = If (Leq (Var "x") (Num 10)) (Atrib (Var "y") (Soma (Var "x") (Var "z"))) (Atrib (Var "y") (Mult (Var "x") (Var "z")))
 
--- exemplo de programa usando DO-WHILE
+-- usando DO-WHILE
 
 sigmaDoWhile :: Memoria
 sigmaDoWhile = [("x", 0), ("y", 15)]
@@ -195,7 +192,7 @@ sigmaDoWhile = [("x", 0), ("y", 15)]
 programaDoWhile :: C
 programaDoWhile = DoWhile (Atrib (Var "x") (Soma (Var "x") (Num 1))) (Leq (Var "x") (Var "y"))
 
--- Testando programas
+--- para rodar:
 
 -- *Main> cbigStep (programaIf, sigmaIf)
 -- 20
